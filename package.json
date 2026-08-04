@@ -1,0 +1,25 @@
+{
+  "name": "produce-marketplace-app",
+  "version": "1.0.0",
+  "description": "Full-stack two-sided marketplace connecting Nigerian farmers to buyers",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "render-build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "start": "cd server && node server.js",
+    "start:server": "cd server && npm start",
+    "db:seed": "cd server && npm run db:seed"
+  },
+  "keywords": [
+    "nigeria",
+    "farmer-marketplace",
+    "agriculture",
+    "react",
+    "express",
+    "postgres",
+    "jwt"
+  ],
+  "author": "",
+  "license": "MIT"
+}
