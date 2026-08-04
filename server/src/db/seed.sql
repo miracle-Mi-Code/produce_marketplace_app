@@ -1,12 +1,12 @@
 -- Seed data for Produce Marketplace App
 
 -- 1. Insert Users (Password is 'password123' hashed with bcrypt)
--- Hash for 'password123': $2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H
+-- Hash for 'password123': $2a$10$GuouZt9GIF8wvEUAzuG8kOYCyfn7j7ID4eJP2hAo3qXABDGDi7.si
 INSERT INTO users (name, email, password_hash, phone, role, state, lga) VALUES
-('Musa Ibrahim', 'musa@farmer.ng', '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H', '08031234567', 'farmer', 'Kano', 'Kura'),
-('Tunde Bakare', 'tunde@farmer.ng', '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H', '08059876543', 'farmer', 'Oyo', 'Ibadan North'),
-('Nkechi Okonkwo', 'nkechi@buyer.ng', '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H', '08021112233', 'buyer', 'Lagos', 'Ikeja'),
-('Amina Bello', 'amina@agrideal.ng', '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H', '08145556677', 'both', 'Benue', 'Gboko');
+('Musa Ibrahim', 'musa@farmer.ng', '$2a$10$GuouZt9GIF8wvEUAzuG8kOYCyfn7j7ID4eJP2hAo3qXABDGDi7.si', '08031234567', 'farmer', 'Kano', 'Kura'),
+('Tunde Bakare', 'tunde@farmer.ng', '$2a$10$GuouZt9GIF8wvEUAzuG8kOYCyfn7j7ID4eJP2hAo3qXABDGDi7.si', '08059876543', 'farmer', 'Oyo', 'Ibadan North'),
+('Nkechi Okonkwo', 'nkechi@buyer.ng', '$2a$10$GuouZt9GIF8wvEUAzuG8kOYCyfn7j7ID4eJP2hAo3qXABDGDi7.si', '08021112233', 'buyer', 'Lagos', 'Ikeja'),
+('Amina Bello', 'amina@agrideal.ng', '$2a$10$GuouZt9GIF8wvEUAzuG8kOYCyfn7j7ID4eJP2hAo3qXABDGDi7.si', '08145556677', 'both', 'Benue', 'Gboko');
 
 -- 2. Insert Listings
 INSERT INTO listings (farmer_id, produce_name, category, quantity, unit, price_per_unit, location, state, lga, harvest_date, photo_url, description, status) VALUES

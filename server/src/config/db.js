@@ -1,57 +1,15 @@
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 let pool = null;
 let isPgConnected = false;
 
 // Memory storage fallback if PostgreSQL is not available locally during evaluation
+// Password hashes are generated at startup so they are always valid bcrypt hashes for 'password123'
 const mockStore = {
-  users: [
-    {
-      id: 1,
-      name: 'Musa Ibrahim',
-      email: 'musa@farmer.ng',
-      password_hash: '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H', // password123
-      phone: '08031234567',
-      role: 'farmer',
-      state: 'Kano',
-      lga: 'Kura',
-      created_at: new Date('2026-07-01')
-    },
-    {
-      id: 2,
-      name: 'Tunde Bakare',
-      email: 'tunde@farmer.ng',
-      password_hash: '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H',
-      phone: '08059876543',
-      role: 'farmer',
-      state: 'Oyo',
-      lga: 'Ibadan North',
-      created_at: new Date('2026-07-02')
-    },
-    {
-      id: 3,
-      name: 'Nkechi Okonkwo',
-      email: 'nkechi@buyer.ng',
-      password_hash: '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H',
-      phone: '08021112233',
-      role: 'buyer',
-      state: 'Lagos',
-      lga: 'Ikeja',
-      created_at: new Date('2026-07-03')
-    },
-    {
-      id: 4,
-      name: 'Amina Bello',
-      email: 'amina@agrideal.ng',
-      password_hash: '$2a$10$7R0Z.uF./tQd3eWp2l6s3OaT/O5f23D4L7U6Y5W5t2A1S0D2F3G4H',
-      phone: '08145556677',
-      role: 'both',
-      state: 'Benue',
-      lga: 'Gboko',
-      created_at: new Date('2026-07-04')
-    }
-  ],
+  users: [],
+  _usersInitialized: false,
   listings: [
     {
       id: 1,
@@ -186,6 +144,58 @@ const mockStore = {
   ]
 };
 
+// Initialize mock users with a real bcrypt hash so demo login works correctly
+const initMockStore = async () => {
+  const password_hash = await bcrypt.hash('password123', 10);
+  mockStore.users = [
+    {
+      id: 1,
+      name: 'Musa Ibrahim',
+      email: 'musa@farmer.ng',
+      password_hash,
+      phone: '08031234567',
+      role: 'farmer',
+      state: 'Kano',
+      lga: 'Kura',
+      created_at: new Date('2026-07-01')
+    },
+    {
+      id: 2,
+      name: 'Tunde Bakare',
+      email: 'tunde@farmer.ng',
+      password_hash,
+      phone: '08059876543',
+      role: 'farmer',
+      state: 'Oyo',
+      lga: 'Ibadan North',
+      created_at: new Date('2026-07-02')
+    },
+    {
+      id: 3,
+      name: 'Nkechi Okonkwo',
+      email: 'nkechi@buyer.ng',
+      password_hash,
+      phone: '08021112233',
+      role: 'buyer',
+      state: 'Lagos',
+      lga: 'Ikeja',
+      created_at: new Date('2026-07-03')
+    },
+    {
+      id: 4,
+      name: 'Amina Bello',
+      email: 'amina@agrideal.ng',
+      password_hash,
+      phone: '08145556677',
+      role: 'both',
+      state: 'Benue',
+      lga: 'Gboko',
+      created_at: new Date('2026-07-04')
+    }
+  ];
+  mockStore._usersInitialized = true;
+};
+
 const connectionString = process.env.DATABASE_URL;
 
 if (connectionString) {
@@ -203,9 +213,13 @@ if (connectionString) {
     .catch(err => {
       console.log('ℹ️ PostgreSQL not active on local port 5432. Operating seamlessly in demo mode with sample produce database.');
       isPgConnected = false;
+      // Ensure mock users are initialized when falling back to demo mode
+      initMockStore();
     });
 } else {
   console.log('ℹ️ No DATABASE_URL provided. Operating with in-memory database store.');
+  // Initialize mock users for in-memory demo mode
+  initMockStore();
 }
 
 const query = async (text, params) => {
@@ -220,5 +234,6 @@ module.exports = {
   pool,
   query,
   isPgConnected: () => isPgConnected,
-  mockStore
+  mockStore,
+  initMockStore
 };
